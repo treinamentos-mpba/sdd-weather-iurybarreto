@@ -1,6 +1,6 @@
 # Plano Técnico — Aplicação de Previsão do Tempo
 
-## Arquitetura
+## Arquitetura (Architecture)
 
 Aplicação web React de página única, sem backend de produto no MVP. A dependência segue uma direção única: apresentação → orquestração → acesso a dados → API externa. Componentes não fazem requisições; serviços não conhecem React; funções puras não acessam rede, estado de interface ou DOM.
 
@@ -20,7 +20,7 @@ flowchart LR
 
 **Decisão de integração:** chamar Open-Meteo diretamente do navegador. Não há chave secreta, autenticação ou persistência de usuário que exija um servidor intermediário; isso mantém a implantação simples. Antes do lançamento, validar CORS, limites e termos de uso. Se CORS ou limites impedirem chamadas diretas, reavaliar uma função intermediária sem persistência de dados, registrando essa mudança como decisão de arquitetura.
 
-## Stack Tecnológica
+## Stack Tecnológica (Tech Stack)
 
 | Área | Decisão |
 | --- | --- |
@@ -88,7 +88,7 @@ Fronteiras e dependências:
 
 Essa separação deixa a UI testável com dados de entrada controlados, a orquestração testável substituindo o serviço e o serviço testável simulando apenas `fetch`. Funções puras podem ser testadas sem DOM, rede ou relógio real.
 
-## Modelo de Dados
+## Modelo de Dados (Data Model)
 
 Contratos internos normalizados. A resposta externa não deve ser consumida diretamente pelos componentes.
 
@@ -170,7 +170,7 @@ export type WeatherState =
   | { status: 'error'; city: City; error: WeatherError };
 ```
 
-## Fluxo de Dados
+## Fluxo de Dados (Data Flow)
 
 ```mermaid
 flowchart TD
@@ -279,7 +279,7 @@ O estado vive localmente em React, sem Redux, contexto global, armazenamento no 
 - Usar `AbortController` e identidade da solicitação para cancelar ou ignorar respostas fora de ordem. Cancelamento por nova seleção não vira `error` visível.
 - Cada chamada expira após 10 segundos. Não há retentativa automática; nova tentativa é iniciada pela pessoa.
 
-## Tratamento de Erros
+## Tratamento de Erros (Error Handling)
 
 | Situação | Tratamento |
 | --- | --- |
@@ -294,7 +294,7 @@ O estado vive localmente em React, sem Redux, contexto global, armazenamento no 
 | Resposta de cidade anterior | Descartar se não corresponder à seleção atual. |
 | Erro inesperado | Transitar para `error`, exibir mensagem genérica e ação de nova tentativa; registrar somente métrica operacional agregada, sem texto da consulta ou identificador de usuário. |
 
-## Estratégia de Testes
+## Estratégia de Testes (Testing Strategy)
 
 - **Funções puras (`lib/`, Vitest):** testar Celsius↔Fahrenheit, limites de conversão, valores nulos, formatação de datas e mapeamento de rótulos/ícones WMO. Testes determinísticos, sem DOM, rede ou relógio real.
 - **Acesso a dados (`services/`, Vitest):** substituir `fetch` por mocks; verificar URLs, parâmetros e normalização de respostas. Cobrir geocodificação com resultados/sem resultados, acentos e caracteres especiais, respostas válidas/parciais, HTTP 429/5xx, falha de rede, timeout de 10 segundos e cancelamento. Nenhum teste unitário chama Open-Meteo real.

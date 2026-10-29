@@ -1,6 +1,6 @@
 # Especificação de Produto — Aplicação de Previsão do Tempo
 
-## Visão Geral
+## Visão Geral (Overview)
 
 O Weather App permite que uma pessoa pesquise uma cidade, consulte suas condições meteorológicas atuais e veja a previsão de cinco dias. A interface é destinada ao público pt-BR, funciona em dispositivos móveis e permite alternar a temperatura entre Celsius e Fahrenheit.
 
@@ -21,7 +21,7 @@ O Weather App permite que uma pessoa pesquise uma cidade, consulte suas condiç�
 
 As personas de rotina diária, planejamento de viagem e coordenação de atividades ao ar livre são hipóteses ainda não validadas com pesquisa.
 
-## Requisitos Funcionais
+## Requisitos Funcionais (Functional Requirements)
 
 - **RF-01 — Pesquisar cidades:** a pessoa deve poder enviar um nome de cidade não vazio e receber os locais correspondentes retornados pela busca de Open-Meteo. A consulta deve preservar nomes com acentos, espaços, hífens e apóstrofos; entradas vazias não geram requisição.
 - **RF-02 — Selecionar cidade:** a pessoa deve selecionar um local antes da consulta meteorológica. Cada resultado deve usar o identificador ou as coordenadas retornadas pelo serviço; quando houver mais de um resultado, o app não deve selecionar um deles silenciosamente. O contexto geográfico disponível deve ser exibido para ajudar a desambiguar.
@@ -32,7 +32,7 @@ As personas de rotina diária, planejamento de viagem e coordenação de ativida
 - **RF-07 — Apresentar conteúdo em pt-BR:** textos, rótulos, mensagens, datas, números e descrições meteorológicas devem ser apresentados em português do Brasil. Códigos meteorológicos desconhecidos devem ser identificados como “Condição indisponível”.
 - **RF-08 — Comunicar estados da consulta:** a interface deve distinguir carregamento, ausência de resultados, falha, timeout e resposta parcial. Solicitações expiram após 10 segundos, sem repetição automática; a pessoa pode tentar novamente. Respostas de cidades anteriormente selecionadas não podem substituir os dados da seleção atual.
 
-## Histórias de Usuário
+## Histórias de Usuário (User Stories)
 
 - **US-01 — Encontrar o local correto:** Como Marina, quero pesquisar uma cidade e selecionar o local correspondente para consultar o clima da cidade certa. **Requisitos:** RF-01 e RF-02.
 - **US-02 — Consultar as condições atuais:** Como Marina, quero ver e atualizar manualmente o clima atual da cidade selecionada para decidir como me preparar para o dia. **Requisito:** RF-03.
@@ -54,7 +54,7 @@ As personas de rotina diária, planejamento de viagem e coordenação de ativida
 | US-06 — Consultar em português | AC-07.1–AC-07.2 | RNF-03, RNF-08 |
 | US-07 — Entender o estado da consulta | AC-01.3, AC-08.1–AC-08.5 | RNF-02, RNF-03, RNF-04, RNF-05, RNF-06, RNF-07, RNF-08 |
 
-## Critérios de Aceite
+## Critérios de Aceite (Acceptance Criteria)
 
 Cada requisito funcional está coberto por um ou mais cenários. Os termos Given, When e Then identificam, respectivamente, o contexto inicial, a ação e o resultado observável. Os critérios de previsão usam relógio fixo e fuso conhecido no conjunto de teste.
 
@@ -147,7 +147,7 @@ Cada requisito funcional está coberto por um ou mais cenários. Os termos Given
 	- **When:** a resposta de A chega depois da seleção de B.
 	- **Then:** os dados de A não são exibidos; a cidade selecionada continua sendo B e a interface mostra os dados de B ou seu estado de carregamento.
 
-## Requisitos Não Funcionais
+## Requisitos Não Funcionais (Non-Functional Requirements)
 
 - **RNF-01 — Responsividade:** as tarefas principais devem funcionar sem rolagem horizontal em larguras de 320, 375, 768, 1024 e 1440 px.
 - **RNF-02 — Usabilidade móvel:** busca, seleção de cidade, consulta e alternância de unidade devem ser concluíveis por toque nos dispositivos suportados; nenhum controle necessário depende exclusivamente de ponteiro ou teclado físico.
@@ -159,7 +159,7 @@ Cada requisito funcional está coberto por um ou mais cenários. Os termos Given
 - **RNF-08 — Idioma:** textos, mensagens, datas, números e descrições meteorológicas devem seguir pt-BR. Condições conhecidas devem ter rótulos pt-BR; um código meteorológico desconhecido deve resultar em “Condição indisponível”, nunca em código bruto.
 - **RNF-09 — Validação de usabilidade:** em um teste com 10 participantes representativos, pelo menos 8 devem concluir busca, consulta do clima atual e leitura da previsão sem ajuda em até 90 segundos por participante.
 
-## Casos Extremos
+## Casos Extremos (Edge Cases)
 
 | Caso | Comportamento esperado |
 | --- | --- |
@@ -173,14 +173,14 @@ Cada requisito funcional está coberto por um ou mais cenários. Os termos Given
 
 Outros casos a cobrir nos testes incluem mudança de fuso/data, conversão de temperaturas extremas e mudança de unidade durante o carregamento.
 
-## Premissas
+## Premissas (Assumptions)
 
 - A busca mundial e a previsão dependem da cobertura e disponibilidade oferecidas pela Open-Meteo; validar termos, limites e atribuição antes da distribuição pública.
 - As personas são hipóteses; a validação de usabilidade usa participantes representativos antes do lançamento.
 - A disponibilidade da interface e o sucesso das consultas meteorológicas são métricas separadas; falha do provedor não é contabilizada como indisponibilidade da aplicação.
 - A topologia da integração será definida no plano técnico, mantendo o comportamento de produto independente dessa decisão.
 
-## Riscos
+## Riscos (Risks)
 
 | Risco | Probabilidade | Impacto | Mitigação |
 | --- | --- | --- | --- |
@@ -192,7 +192,7 @@ Outros casos a cobrir nos testes incluem mudança de fuso/data, conversão de te
 | A aplicação não atinge as metas aprovadas de desempenho, disponibilidade ou acessibilidade. | Média | Alto: pode impedir o lançamento ou excluir usuários. | Testar contra os perfis e critérios definidos antes do lançamento; acompanhar p95, disponibilidade e defeitos de acessibilidade em métricas operacionais. |
 | Dados meteorológicos são confundidos com alerta oficial ou garantia. | Baixa | Alto: pode levar a decisões inadequadas e afetar a confiança no produto. | Definir atribuição e avisos apropriados; não oferecer alertas oficiais sem fonte e aprovação específicas. |
 
-## Fora do Escopo
+## Fora do Escopo (Out of Scope)
 
 - Aplicativos nativos para iOS ou Android no primeiro lançamento.
 - Autenticação, contas de usuário ou persistência de dados no servidor.
@@ -204,7 +204,7 @@ Outros casos a cobrir nos testes incluem mudança de fuso/data, conversão de te
 - Persistência local da unidade selecionada e telemetria de produto/histórico de consultas.
 - Idiomas da interface além de pt-BR no lançamento.
 
-## Perguntas em Aberto
+## Perguntas em Aberto (Open Questions)
 
 As decisões de produto e as metas do MVP foram aprovadas. Resta um bloqueio externo antes da distribuição pública:
 
