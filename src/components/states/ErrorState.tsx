@@ -1,23 +1,26 @@
+import { AlertTriangle } from 'lucide-react';
+
 interface ErrorStateProps {
   message: string;
   onRetry: () => void;
 }
 
-/** Estado de erro com ação de "tentar novamente". */
 export default function ErrorState({ message, onRetry }: ErrorStateProps) {
   return (
-    <div role="alert" className="flex flex-col items-center gap-4 py-16 text-center">
-      <span aria-hidden="true" className="text-4xl">
-        ⚠️
-      </span>
-      <p className="text-white/80">{message}</p>
+    <section className="rounded-2xl border border-rose-300/20 bg-rose-400/5 p-5 text-white shadow-glass backdrop-blur-md">
+      <div className="flex items-start gap-3">
+        <AlertTriangle aria-hidden="true" className="mt-0.5 shrink-0 text-rose-200" size={20} />
+        <p role="alert" className="min-w-0 text-sm leading-6 text-rose-50">
+          {message}
+        </p>
+      </div>
       <button
         type="button"
         onClick={onRetry}
-        className="rounded-lg bg-accent-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-accent-600"
+        className="mt-4 rounded-lg border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
       >
         Tentar novamente
       </button>
-    </div>
+    </section>
   );
 }
