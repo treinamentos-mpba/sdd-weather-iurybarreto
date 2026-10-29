@@ -1,12 +1,22 @@
-/** Indicador de carregamento acessível. */
-export default function LoadingState() {
+import { LoaderCircle } from 'lucide-react';
+
+interface LoadingStateProps {
+  message?: string;
+}
+
+export default function LoadingState({ message = 'Carregando…' }: LoadingStateProps) {
   return (
-    <div role="status" aria-live="polite" className="flex flex-col items-center gap-3 py-16">
-      <span
+    <div
+      role="status"
+      aria-live="polite"
+      className="flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-6 text-white/80 shadow-glass backdrop-blur-md"
+    >
+      <LoaderCircle
         aria-hidden="true"
-        className="h-10 w-10 animate-spin rounded-full border-4 border-white/20 border-t-accent-500"
+        className="animate-spin text-accent-400 motion-reduce:animate-none"
+        size={20}
       />
-      <p className="text-white/60">Carregando o clima…</p>
+      <span>{message}</span>
     </div>
   );
 }

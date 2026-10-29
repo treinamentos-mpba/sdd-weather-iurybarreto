@@ -1,28 +1,32 @@
-import type { ForecastDay, Unit } from '../types/weather';
+import { formatDayLabel, formatMetric } from '../lib/format';
 import { formatTemperature } from '../lib/temperature';
-import { getWeatherIcon, getWeatherLabel } from '../lib/weatherCodes';
-import { getDayLabel, getShortDate } from '../lib/format';
+import type { ForecastDay, Unit } from '../types/weather';
+import WeatherIcon from './WeatherIcon';
 
 interface ForecastCardProps {
   day: ForecastDay;
-  index: number;
   unit: Unit;
 }
 
-/** Card de um dia da previsão. */
-export default function ForecastCard({ day, index, unit }: ForecastCardProps) {
+export default function ForecastCard({ day, unit }: ForecastCardProps) {
   return (
-    <li className="flex flex-col items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-md">
-      <p className="font-semibold">{getDayLabel(day.date, index)}</p>
-      <p className="text-xs text-white/50">{getShortDate(day.date)}</p>
-      <span aria-hidden="true" className="text-3xl" title={getWeatherLabel(day.weatherCode)}>
-        {getWeatherIcon(day.weatherCode)}
-      </span>
-      <p className="text-sm">
-        <span className="font-semibold">{formatTemperature(day.max, unit)}</span>{' '}
-        <span className="text-white/50">{formatTemperature(day.min, unit)}</span>
+    <article className="flex min-h-48 min-w-0 flex-col break-words rounded-2xl border border-white/10 bg-white/5 p-4 text-white shadow-glass backdrop-blur-md">
+      <h3 className="text-sm font-semibold capitalize text-white/80">{formatDayLabel(day.date)}</h3>
+      <WeatherIcon weatherCode={day.weatherCode} className="my-4 self-center text-sun" size={40} />
+      <p className="min-h-10 text-center text-sm text-white/80">{day.conditionPtBr}</p>
+      <dl className="mt-auto grid grid-cols-2 gap-2 text-center">
+        <div className="min-w-0">
+          <dt className="text-xs text-white/70">Máx.</dt>
+          <dd className="font-semibold">{formatTemperature(day.maximumC, unit)}</dd>
+        </div>
+        <div className="min-w-0">
+          <dt className="text-xs text-white/70">Mín.</dt>
+          <dd className="font-semibold">{formatTemperature(day.minimumC, unit)}</dd>
+        </div>
+      </dl>
+      <p className="mt-3 text-center text-xs text-white/70">
+        Chuva: {formatMetric(day.precipitationProbabilityPercent, '%')}
       </p>
-      <p className="text-xs text-accent-400">💧 {day.precipitationProbability}%</p>
-    </li>
+    </article>
   );
 }
